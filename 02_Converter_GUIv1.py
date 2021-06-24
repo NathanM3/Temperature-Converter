@@ -56,12 +56,12 @@ class Converter:
         self.to_f_button.grid(row=0, column=1)
 
         # Answer label (row 4)
-        self.answer_label = Label(self.converter_frame,
-                                  text="Conversion goes here...",
-                                  font="Arial, 14 bold", width=30,
-                                  background=background_color, fg="purple",
-                                  pady=10)
-        self.answer_label.grid(row=4)
+        self.converted_label = Label(self.converter_frame,
+                                     text="Conversion goes here...",
+                                     font="Arial, 14 bold",
+                                     background=background_color, fg="purple",
+                                     pady=10)
+        self.converted_label.grid(row=4)
 
         # History / Help button frame (row 5)
         self.hist_help_frame = Frame(self.converter_frame)
