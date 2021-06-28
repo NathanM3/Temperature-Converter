@@ -1,11 +1,15 @@
-""" Converting Fahrenheit to Celsius v1
+""" Converting Fahrenheit to Celsius v3
 Converting from degrees Fahrenheit to Celsius
 Function takes in a value, does the conversion and puts answer into a list"""
 
 
 def to_c(from_f):
     celsius = (from_f - 32) * 5/9
-    return celsius
+    # Method 1 of rounding numbers - checking if it has any decimals
+    if celsius % 1 == 0:
+        return int(celsius)
+    else:
+        return round(celsius, 1)
 
 
 # Main Routine
@@ -18,3 +22,4 @@ for temp in temperatures:
     converted.append(ans_statement)
 
 print(converted)
+
