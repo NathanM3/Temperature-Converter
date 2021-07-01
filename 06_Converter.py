@@ -1,6 +1,7 @@
-""" Converter Trial 3 v1
-based on 05_Converter_trial2v2
-Completing the temp convert function at line 84
+""" 06 Converter
+based on 05_Converter_trial3v2
+Completing the converter component that was essentially finished in 05 v2
+Reformatting the size and wrap of labels etc.
 """
 
 from tkinter import *
@@ -14,13 +15,13 @@ class Converter:
         background_color = "light blue"
 
         # Converter Frame
-        self.converter_frame = Frame(width=300, bg=background_color, pady=10)
+        self.converter_frame = Frame(bg=background_color, pady=10)
         self.converter_frame.grid()
 
         # Temperature Converter Heading (row 0)
         self.temp_converter_label = Label(self.converter_frame,
                                           text="Temperature Converter",
-                                          font="Arial 16 bold",
+                                          font="Arial 19 bold",
                                           bg=background_color,
                                           padx=10, pady=10)
         self.temp_converter_label.grid(row=0)
@@ -31,7 +32,7 @@ class Converter:
                                                   "converted and then push "
                                                   "one of the buttons "
                                                   "below...",
-                                             font="Arial 10 italic", wrap=250,
+                                             font="Arial 10 italic", wrap=290,
                                              justify=LEFT, bg=background_color,
                                              padx=10, pady=10)
         self.temp_instructions_label.grid(row=1)
@@ -79,10 +80,8 @@ class Converter:
                                   text="Help", width=5)
         self.help_button.grid(row=0, column=1)
 
-    def temp_convert(self, to):
-        print(to)
-
-        converted = 0  # Adding converted to be used later
+    def temp_convert(self, low):
+        print(low)
 
         error = "#ffafaf"  # Pale pink background for when entry box has errors
 
@@ -91,51 +90,48 @@ class Converter:
 
         try:
             to_convert = float(to_convert)
+            has_errors = "no"
 
-            # Check amount is valid
-            if to_convert < to:
-                self.converted_label.configure(text="Too cold!!", fg="red")
-                self.to_convert_entry.configure(bg=error)
-
+            # Check amount is valid and Convert to F
+            if low == -273 and to_convert >= low:
+                fahrenheit = (to_convert * 9 / 5) + 32
+                to_convert = self.round_it(to_convert)
+                fahrenheit = self.round_it(fahrenheit)
+                answer = "{} degrees C is {} degrees F".format(to_convert,
+                                                               fahrenheit)
+            # Check amount is valid and convert to C
+            elif low == -459 and to_convert >= low:
+                celsius = (to_convert - 32) * 5 / 9
+                to_convert = self.round_it(to_convert)
+                celsius = self.round_it(celsius)
+                answer = "{} degrees F is {} degrees C".format(to_convert,
+                                                               celsius)
             else:
-                # Convert to F
-                if to == -273:
-                    converted = to_convert * 9 / 5 + 32
-
-                # Convert to C
-                if to == -459:
-                    converted = (to_convert - 32) * 5 / 9
-
-                # Round!!
-                if converted % 1 == 0:
-                    converted = int(converted)
-                else:
-                    converted = round(converted, 1)
-
-                if to_convert % 1 == 0:
-                    to_convert = int(to_convert)
-                else:
-                    to_convert = round(to_convert, 1)
+                # If input is invalid (eg too cold)
+                answer = "Too cold"
+                has_errors = "yes"
 
                 # Display answer
+            if has_errors == "no":
                 self.to_convert_entry.configure(bg="white")
-                if to == -273:
-                    self.converted_label.configure(text=
-                                                   "{} degrees C is {} degrees F"
-                                                   .format(to_convert,
-                                                           converted),
-                                                   fg="blue")
-                else:
-                    self.converted_label.configure(text=
-                                                   "{} degrees F is {} degrees C"
-                                                   .format(to_convert,
-                                                           converted),
-                                                   fg="blue")
+                self.converted_label.configure(text=answer, fg="blue")
+            else:
+                self.converted_label.configure(text=answer, fg="red")
+                self.to_convert_entry.configure(bg=error)
+
             # Add answer to list for History
-            history.append(converted)
+            history.append(answer)
+
         except ValueError:
             self.converted_label.configure(text="Enter a number!!", fg="red")
             self.to_convert_entry.configure(bg=error)
+
+    def round_it(self, to_round):
+        if to_round % 1 == 0:
+            rounded = int(to_round)
+        else:
+            rounded = round(to_round, 1)
+        return rounded
 
 
 # main routine
@@ -145,5 +141,3 @@ if __name__ == "__main__":
     root.title("Temperature Converter")
     something = Converter()
     root.mainloop()
-
-
