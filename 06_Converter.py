@@ -115,9 +115,11 @@ class Converter:
             if has_errors == "no":
                 self.to_convert_entry.configure(bg="white")
                 self.converted_label.configure(text=answer, fg="blue")
+                print(answer)
             else:
                 self.converted_label.configure(text=answer, fg="red")
                 self.to_convert_entry.configure(bg=error)
+                print(answer)
 
             # Add answer to list for History
             history.append(answer)
@@ -125,6 +127,7 @@ class Converter:
         except ValueError:
             self.converted_label.configure(text="Enter a number!!", fg="red")
             self.to_convert_entry.configure(bg=error)
+            print("Enter a number!!")
 
     def round_it(self, to_round):
         if to_round % 1 == 0:
