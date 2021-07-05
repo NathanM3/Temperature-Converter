@@ -7,12 +7,15 @@ data = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh']
 # assume valid data for now.
 filename = input("Enter a Filename: ")
 
+# add .txt suffix!
+filename = filename + ".txt"
+
 # create file to hold data
 
 f = open(filename, "w+")
 
 for item in data:
-    f.write(item)
+    f.write(item + "\n")
 
 # close file
 f.close()
