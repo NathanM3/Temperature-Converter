@@ -1,5 +1,8 @@
-# Creates basic interface with a history button which opens the history screen
-# Fixed problem where history button remains disabled
+# Changed the command on history button to lambda... on line 50
+# Then (again) changed the history function on lines 53-54
+# Add calc_history parameter to History class on line 57
+# Then enter history output from line 92
+# Add label in lines 98-101
 
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
@@ -11,13 +14,14 @@ class Convertor:
         background_color = "light blue"
 
         # Initialise list to hold calculation history
-        self.all_calculations = ['0 degrees F is -17.8 degrees C',
-                                 '0 degrees C is 32 degrees F',
-                                 '40 degrees C is 104 degrees F'
-                                 '40 degrees F is 4.4 degrees C',
-                                 '12 degrees C is 53.6 degrees F',
-                                 '24 degrees C is 75.2 degrees F',
-                                 '100 degrees F is 37.8 degrees C']
+        # In later versions list will be populated with user calculations
+        self.all_calc_list = ['0 degrees F is -17.8 degrees C',
+                              '0 degrees C is 32 degrees F',
+                              '40 degrees C is 104 degrees F'
+                              '40 degrees F is 4.4 degrees C',
+                              '12 degrees C is 53.6 degrees F',
+                              '24 degrees C is 75.2 degrees F',
+                              '100 degrees F is 37.8 degrees C']
 
         # Converter Main Screen GUI..
         self.converter_frame = Frame(width=300, height=300,
@@ -34,18 +38,18 @@ class Convertor:
 
         #  button (row 1)
         self.history_button = Button(self.converter_frame, text="History",
-                                  font=("Arial", "14"),
-                                  padx=10, pady=10, command=self.history)
+                                     font=("Arial", "14"),
+                                     padx=10, pady=10,
+                                     command=lambda: self.history(
+                                         self.all_calc_list))
         self.history_button.grid(row=1)
 
-    def history(self):
-        print("You asked for history")
-        get_history = History(self)
-        get_history.history_text.configure(text="History text goes here")
+    def history(self, calc_history):
+        History(self, calc_history)
 
 
 class History:
-    def __init__(self, partner):
+    def __init__(self, partner, calc_history):
         background = "#a9ef99"  # Pale green
 
         # disable history button
@@ -55,14 +59,16 @@ class History:
         self.history_box = Toplevel()
 
         # if users press cross at top, closes history and 'releases' history button
-        self.history_box.protocol('WM_DELETE_WINDOW', partial(self.close_history,
-                                                           partner))
+        self.history_box.protocol('WM_DELETE_WINDOW',
+                                  partial(self.close_history,
+                                          partner))
         # set up GUI Frame
         self.history_frame = Frame(self.history_box, width=300, bg=background)
         self.history_frame.grid()
 
         # set up history heading (row 0)
-        self.how_heading = Label(self.history_frame, text="Calculation History",
+        self.how_heading = Label(self.history_frame,
+                                 text="Calculation History",
                                  font="Arial 19 bold", bg=background, pady=10)
         self.how_heading.grid(row=0)
 
@@ -79,7 +85,16 @@ class History:
                                   wrap=250)
         self.history_text.grid(row=1)
 
-        # History Output goes here...
+        # History Output goes here... (row 2)
+        history_string = ""
+        if len(calc_history) >= 7:
+            for item in range(0, 7):
+                history_string += calc_history[len(calc_history)-item-1] + "\n"
+
+        # Label to display calculation history to user
+        self.calc_label = Label(self.history_frame, text=history_string,
+                                bg=background, font="Arial 12", justify=LEFT)
+        self.calc_label.grid(row=2)
 
         # Export / Dismiss buttons frame (row 3)
         self.export_dismiss_frame = Frame(self.history_frame)
