@@ -18,10 +18,7 @@ class Convertor:
         self.all_calc_list = ['0 degrees F is -17.8 degrees C',
                               '0 degrees C is 32 degrees F',
                               '40 degrees C is 104 degrees F',
-                              '40 degrees F is 4.4 degrees C',
-                              '12 degrees C is 53.6 degrees F',
-                              '24 degrees C is 75.2 degrees F',
-                              '100 degrees F is 37.8 degrees C']
+                              '40 degrees F is 4.4 degrees C']
 
         # Converter Main Screen GUI..
         self.converter_frame = Frame(width=300, height=300,
@@ -90,6 +87,17 @@ class History:
         if len(calc_history) >= 7:
             for item in range(0, 7):
                 history_string += calc_history[len(calc_history)-item-1] + "\n"
+
+        else:
+            for item in calc_history:
+                history_string += calc_history[len(calc_history) -
+                                               calc_history.index(item)-1] \
+                                  + "\n"
+                self.history_text.config(text="Here is your calculation "
+                                              "history. You can use the "
+                                              "export button to save this "
+                                              "data to a text file if "
+                                              "desired.")
 
         # Label to display calculation history to user
         self.calc_label = Label(self.history_frame, text=history_string,
