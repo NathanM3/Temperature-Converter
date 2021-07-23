@@ -1,8 +1,10 @@
-# Follows on from 09_History_GUI_v4.py
-# Removed all but 4 elements from the list (lies 19-22)
-# Then added else statement for list less than 7 elements on lines 90-98
-# NOTE the subtle difference between line 88 (whole list) and line 94 which
-# uses index values for items in the list
+# This is a copy of 09_History_GUI_v5 which is combined with the convert
+# function from 09_History_GUI_v1 (copy of which was saved as v1b to allow
+# adaption. The convert class (lines 13-147) - NOT the history function
+# on lines 149-150 - has been copied from 09_History_GUI_v1b (lines 15-149)
+# Then, on line 133, need to change "if answer != "Too cold" to
+# "if has_errors != "yes"
+# Removed the print statement from line 135 and make the history button NORMAL
 
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
@@ -75,7 +77,9 @@ class Converter:
         self.history_button = Button(self.hist_help_frame,
                                      font="Arial 12 bold",
                                      text="Calculation History",
-                                     width=15)
+                                     width=15,
+                                     command=lambda: self.history
+                                     (self.all_calc_list))
         self.history_button.grid(row=0, column=0)
 
         if len(self.all_calc_list) == 0:
@@ -126,9 +130,9 @@ class Converter:
                 self.to_convert_entry.configure(bg=error)
 
             # Add answer to list for History
-            if answer != "Too cold":
+            if has_errors != "yes":
                 self.all_calc_list.append(answer)
-                print(self.all_calc_list)
+                self.history_button.config(state=NORMAL)
 
         except ValueError:
             self.converted_label.configure(text="Enter a number!!", fg="red")

@@ -77,7 +77,9 @@ class Converter:
         self.history_button = Button(self.hist_help_frame,
                                      font="Arial 12 bold",
                                      text="Calculation History",
-                                     width=15)
+                                     width=15,
+                                     command=lambda: self.history
+                                     (self.all_calc_list))
         self.history_button.grid(row=0, column=0)
 
         if len(self.all_calc_list) == 0:
