@@ -1,4 +1,7 @@
 # This is a re-purposed copy of 09_History_GUI_v5.py
+# Changed all references to Export instead of Help
+# Changed labels and added warning text
+# New entry box filename and buttons for exporting etc.
 
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
@@ -88,7 +91,9 @@ class Export:
         self.save_button = Button(self.save_cancel_frame, text="Save")
         self.save_button.grid(row=0, column=0)
 
-        self.cancel_button = Button(self.save_cancel_frame, text="Cancel")
+        self.cancel_button = Button(self.save_cancel_frame, text="Cancel",
+                                    command=partial(self.close_export,
+                                                    partner))
         self.cancel_button.grid(row=0, column=1)
 
     def close_export(self, partner):

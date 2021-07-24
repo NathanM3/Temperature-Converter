@@ -1,0 +1,4 @@
+0 degrees F is -17.8 degrees C
+0 degrees C is 32 degrees F
+40 degrees C is 104 degrees F
+40 degrees F is 4.4 degrees C
